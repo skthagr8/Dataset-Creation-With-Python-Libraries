@@ -1,5 +1,7 @@
 from pprint import pprint
 from gpt4all import GPT4All
+import sys
+from faker import Faker
 
 
 class GPTGenerator():
@@ -23,3 +25,57 @@ class GPTGenerator():
       print(response)
       pprint(self.logging_messages[1])
       return response
+
+
+'''
+Data generation using GPT4All and Faker Libraries
+
+Data to be generated:
+
+1. Developer Profile EG Name, Email, Age, Location, Skills, Experience
+2. Platform Used eg (Upwork, Whatsapp, Fiverr, X, LinkedIn, Indeed, Instagram etc.)
+3. Project Description
+4. Amount lost
+5. Project Type
+6. Timeline
+7. Screenshots
+8. Communication Logs
+
+'''
+
+african_localizations =[
+   'fakerAF_ZA',
+   'fakerEN_NG',
+   'fakerEN_ZA',
+   'fakerFR_SN',
+   'fakerYO_NG',
+   'fakerZU_ZA'
+]
+
+from faker import Faker
+class FakerGenerator:
+  def __init__(self, params=None,locale='en_US'):
+     self.params = params or {
+       "full_name":"name"
+     }
+     self.locale = locale
+     self._faker = Faker(self.locale)
+
+  def generate(self):
+    results = {}
+
+    # Loop through the parameters
+    for key, method_name in self.params.items():
+      # Extract the value from the parameters
+      faker_method = getattr(self._faker, method_name)
+      if callable(faker_method):
+        results[key] = faker_method()
+    return results
+  
+
+generated_developer_profiles = {
+    locale: FakerGenerator(locale=locale).generate()
+    for locale in african_localizations
+} 
+
+    
