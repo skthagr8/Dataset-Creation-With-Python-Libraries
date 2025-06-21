@@ -44,12 +44,10 @@ Data to be generated:
 '''
 
 african_localizations =[
-   'fakerAF_ZA',
-   'fakerEN_NG',
-   'fakerEN_ZA',
-   'fakerFR_SN',
-   'fakerYO_NG',
-   'fakerZU_ZA'
+   'tw_GH',
+   'yo_NG',
+   'zu_ZA',
+   'sw'
 ]
 
 from faker import Faker
@@ -73,9 +71,20 @@ class FakerGenerator:
     return results
   
 
-generated_developer_profiles = {
-    locale: FakerGenerator(locale=locale).generate()
-    for locale in african_localizations
-} 
+generated_developer_profiles = {}
 
-    
+for locale in african_localizations:
+    try:
+        generated_developer_profiles[locale] = FakerGenerator(locale=locale).generate()
+    except Exception as e:
+        print(f"Error generating profile for locale {locale}: {e}")
+        continue
+
+
+print("Generated Developer Profiles:")
+for locale, profile in generated_developer_profiles.items():
+    print(f"Locale: {locale}")
+    pprint(profile)
+    print("\n")
+
+
