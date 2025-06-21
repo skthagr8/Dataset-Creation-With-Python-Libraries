@@ -5,9 +5,22 @@ from gpt4all import GPT4All
 import sys
 from pprint import pprint
 from classdefinitions import GPTGenerator
+from faker import Faker
 
 '''
-Data generation using GPT4All
+Data generation using GPT4All and Faker Libraries
+
+Data to be generated:
+
+1. Developer Profile
+2. Platform Used
+3. Project Description
+4. Amount lost
+5. Project Type
+6. Timeline
+7. Screenshots
+8. Communication Logs
+
 '''
 
 # Generating Project Types
