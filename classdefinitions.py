@@ -12,16 +12,34 @@ class GPTGenerator():
   ]
 
   # Initializing the GPTGenerator with a model, messages, and a prompt
-  def __init__(self,model, prompt) :
-    self.model = model
+  def __init__(self, prompt, params=None):
+    self._model = GPT4All("Meta-Llama-3-8B-Instruct.Q4_0.gguf")
     self.prompt = prompt
+    self.params = params or {}
+
+  def render_prompt(self):
+    """
+    Renders the prompt by formatting it with the provided parameters.
+    If a parameter is missing, it prints an error message and exits the program.
+    """
+    if not self.params:
+      print("Error: No parameters provided for prompt rendering.")
+      sys.exit(1)
+    try:
+        return self.prompt.format(**self.params)
+    except KeyError as e:
+        print(f"Error: Missing parameter {e} in prompt.")
+        sys.exit(1)
 
   # Method to generate a prompt using the model
   def generate_prompt(self):
-    with self.model.chat_session():
+    with self._model.chat_session():
       pprint(self.logging_messages[0])
 
-      response = self.model.generate(self.prompt,temp=0.7,max_tokens=100)
+      final_prompt = self.render_prompt()
+      print(final_prompt)
+
+      response = self._model.generate(final_prompt,temp=0.7,max_tokens=100)
       print(response)
       pprint(self.logging_messages[1])
       return response
@@ -73,6 +91,7 @@ class FakerGenerator:
 
 generated_developer_profiles = {}
 
+'''
 for locale in african_localizations:
     try:
         generated_developer_profiles[locale] = FakerGenerator(locale=locale).generate()
@@ -86,5 +105,9 @@ for locale, profile in generated_developer_profiles.items():
     print(f"Locale: {locale}")
     pprint(profile)
     print("\n")
+
+'''
+
+print(generated_developer_profiles)
 
 
